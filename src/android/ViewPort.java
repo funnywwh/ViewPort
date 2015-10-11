@@ -9,21 +9,23 @@ import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.engine.SystemWebView;
 
 public class ViewPort extends CordovaPlugin {
     private static final String LOG_TAG = "ViewPort";
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-		final CordovaWebView wv = webView;
+		
         super.initialize(cordova, webView);
-		webView.post(new Runnable() {
+        final SystemWebView swv = (SystemWebView) webView.getView();
+        swv.post(new Runnable() {
             @Override
-            public void run() {
-				WebSettings ws = wv.getSettings();
+            public void run() {            	
+				WebSettings ws = swv.getSettings();
 				ws.setUseWideViewPort(true); 
 				ws.setLoadWithOverviewMode(true);
-				wv.reload();
+				swv.reload();
     			Log.d(LOG_TAG, "ViewPort Enabled");
             }
         });
